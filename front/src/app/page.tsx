@@ -8,13 +8,16 @@ import { ShoppingCart, AlertCircle } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { toast } from "@/components/ui/use-toast"
 
+const ethAddress = '0xYourAddressHere'; // 替换为您的以太坊地址
+const productPriceEth = '0.0001'; // 产品价格，0.01 ETH
+const productPrice = ethers.parseEther(productPriceEth); // 将ETH转换为Wei
+
 export default function Home() {
   const [account, setAccount] = useState('')
   const [connected, setConnected] = useState(false)
   const [networkError, setNetworkError] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const productPrice = ethers.parseEther('0.01') // 0.01 ETH
   const sepoliaChainId = '0xaa36a7' // Chain ID for Sepolia testnet
 
   useEffect(() => {
@@ -117,7 +120,7 @@ export default function Home() {
       const signer = await provider.getSigner()
       
       const transaction = await signer.sendTransaction({
-        to: '0xYourAddressHere', // Replace with your Ethereum address
+        to: ethAddress,
         value: productPrice
       })
 
@@ -129,7 +132,7 @@ export default function Home() {
         },
         body: JSON.stringify({
           from: account,
-          to: '0xYourAddressHere', // 替换为您的以太坊地址
+          to: ethAddress,
           value: ethers.formatEther(productPrice),
           transactionHash: transaction.hash,
         }),
@@ -171,7 +174,7 @@ export default function Home() {
             alt="Product" 
             className="w-full h-[200px] object-cover rounded-md mb-4"
           />
-          <p className="text-2xl font-bold text-center">0.01 ETH</p>
+          <p className="text-2xl font-bold text-center">{productPriceEth} ETH</p>
           {networkError && (
             <Alert variant="destructive" className="mt-4">
               <AlertCircle className="h-4 w-4" />
