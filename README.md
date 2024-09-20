@@ -124,3 +124,32 @@ flowchart TD
 - MongoDB 用于存储和检索交易记录，以支持 RWA 资产的交易和追踪。
 
 ---
+```
+.
+|-- README.md                  # 项目的主要文档，描述项目概述、使用方法和配置指南
+|-- flow.png                   # 项目流程图，可视化展示用户交互和系统流程
+|-- front                      # 前端目录，包含所有前端相关文件
+|   |-- README.md              # 前端部分的文档，说明前端项目的设置和运行方式
+|   |-- next-env.d.ts          # Next.js 的 TypeScript 声明文件
+|   |-- next.config.mjs        # Next.js 的配置文件，使用 ES Module 格式
+|   |-- node_modules           # 包含所有前端依赖的 node 模块
+|   |-- package-lock.json      # 确保所有安装的包的版本一致性
+|   |-- package.json           # 前端项目的依赖和脚本
+|   |-- postcss.config.mjs     # PostCSS 的配置文件，用于处理 CSS
+|   |-- src                    # 前端源代码目录，包含 React 组件和页面
+|   |-- tailwind.config.ts     # Tailwind CSS 的配置文件
+|   `-- tsconfig.json          # TypeScript 的配置文件
+|-- back                       # 后端目录，包含所有后端服务相关文件
+|   |-- go.mod                 # Go 语言的模块依赖文件
+|   |-- go.sum                 # Go 语言的模块依赖校验文件
+|   |-- main.go                # 后端服务的入口文件，配置和启动 Gin 服务器
+|   `-- controllers            # 控制器目录，用于处理不同的业务逻辑
+|       `-- purchaseController.go  # 处理购买请求的控制器
+|-- contracts                  # 智能合约目录，包含所有 Solidity 合约文件
+|   |-- DiagonAlley.sol        # 主要的智能合约文件
+|   `-- script                 # 包含部署脚本的目录
+|       `-- deploy.s.sol       # Foundry 部署脚本
+|-- foundry.toml               # Foundry 的配置文件，用于智能合约的编译和部署
+`-- scripts                    # 脚本目录，包含其他自动化脚本
+    `-- deploy.js              # 使用 JavaScript 编写的部署脚本，可能用于辅助部署或测试
+```
