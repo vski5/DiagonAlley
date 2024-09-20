@@ -111,6 +111,7 @@ flowchart TD
     npm run start
     ```
     前端应用将在 `http://localhost:3000` 运行。
+    需要设置对应的触发的地址。
 
 6. **配置预言机**：
     确保 **Chainlink 预言机** 已配置好，并在智能合约中添加预言机合约地址。
@@ -126,33 +127,58 @@ flowchart TD
 ---
 ```
 .
+
 |-- README.md                  # 项目的主要文档
+
 |-- back                       # 后端目录
+
 |   |-- controllers            # 控制器目录
+
 |   |   `-- purchaseController.go  # 购买请求控制器
+
 |   |-- go.mod                 # Go 语言模块依赖文件
+
 |   |-- go.sum                 # Go 语言模块依赖校验文件
+
 |   `-- main.go                # 后端服务入口文件
+
 |-- contracts                  # 智能合约目录
-|   `-- shop                   # 通过 Foundry 初始化的智能合约开发目录
-|       |-- README.md          # 项目说明文件
-|       |-- foundry.toml       # Foundry 配置文件
-|       |-- lib                # 库文件目录
-|       |-- script             # 脚本目录
-|       |-- src                # 源代码目录
-|       `-- test               # 测试代码目录
+
+|   |-- README.md              # 项目说明文件
+
+|   |-- foundry.toml           # Foundry 配置文件
+
+|   |-- lib                    # 库文件目录
+|   |-- script                 # 脚本目录
+
+|   |-- src                    # 源代码目录
+
+|   `-- test                   # 测试代码目录
+
 |-- flow.png                   # 项目流程图
+
 `-- front                      # 前端目录
+
     |-- README.md              # 前端文档
+
     |-- next-env.d.ts          # Next.js TypeScript 声明文件
+
     |-- next.config.mjs        # Next.js 配置文件
+
     |-- node_modules           # 前端依赖模块
+
     |-- package-lock.json      # 包版本一致性文件
+
     |-- package.json           # 前端项目依赖和脚本
+
     |-- postcss.config.mjs     # PostCSS 配置文件
+
     |-- src                    # 前端源代码目录
+
     |   |-- app                # 应用程序主要逻辑
     |   `-- components         # 组件目录
+
     |-- tailwind.config.ts     # Tailwind CSS 配置文件
+
     `-- tsconfig.json          # TypeScript 配置文件
 ```
