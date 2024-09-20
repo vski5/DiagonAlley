@@ -12,3 +12,10 @@ docs/
 
 # Dotenv file
 .env
+
+# 忽略 区块链密钥
+contracts/foundry.toml
+contracts/lib/forge-std/foundry.toml
+# 忽略 区块链密钥
+foundry.toml
+lib/forge-std/foundry.toml

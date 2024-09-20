@@ -23,3 +23,7 @@ front/.tailwindcache
 # 忽略 TypeScript 构建输出
 front/*.d.ts
 front/*.js.map
+
+# 忽略 区块链密钥
+contracts/foundry.toml
+contracts/lib/forge-std/foundry.toml
