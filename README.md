@@ -103,6 +103,8 @@ flowchart TD
     forge build
     forge script deploy.s.sol:DeployContract --rpc-url <NETWORK_URL>
     ```
+    
+    >forge-std作为一个依赖项，利用git来管理依赖项的版本
 
 5. **启动前端**：
     ```bash
