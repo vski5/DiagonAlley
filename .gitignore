@@ -1,0 +1,25 @@
+# 忽略 node_modules 目录
+front/node_modules
+
+# 忽略构建输出文件夹
+front/.next
+
+# 忽略环境变量文件
+front/.env
+front/.env.local
+front/.env.development.local
+front/.env.test.local
+front/.env.production.local
+
+# 忽略锁定文件
+front/package-lock.json
+# 如果你使用的是 Yarn 或 pnpm
+# front/yarn.lock
+# front/pnpm-lock.yaml
+
+# 忽略 Tailwind 的缓存文件
+front/.tailwindcache
+
+# 忽略 TypeScript 构建输出
+front/*.d.ts
+front/*.js.map

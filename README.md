@@ -95,7 +95,7 @@ flowchart TD
     ```bash
     go run main.go
     ```
-    后端服务将在 `http://localhost:8080` 运行。
+    后端服务将在 `http://localhost:2333` 运行。
 
 4. **编译智能合约**：
     使用 **Foundry** 进行编译和部署：
@@ -106,6 +106,7 @@ flowchart TD
 
 5. **启动前端**：
     ```bash
+    cd front
     npm install
     npm run start
     ```
