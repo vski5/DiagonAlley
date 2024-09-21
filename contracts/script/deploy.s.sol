@@ -6,8 +6,7 @@
 
    contract DeployScript is Script {
        function run() public {
-           vm.startBroadcast();
+           vm.startBroadcast(); // 开始广播交易
            new TransferContract(); // 部署 TransferContract 合约
-           vm.stopBroadcast();
-       }
+           vm.stopBroadcast(); // 停止广播交易
    }

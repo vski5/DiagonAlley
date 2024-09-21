@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ShoppingCart, AlertCircle } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { toast } from "@/components/ui/use-toast"
+import { toast, ToastContainer } from 'react-toastify' // 使用 react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // 引入 react-toastify 样式
+import TransferABI from '@/abi/TransferABI.json' // 引入Transfer合约ABI
 
-const ethAddress = '0xYourAddressHere'; // 替换为您的以太坊地址
-const productPriceEth = '0.0001'; // 产品价格，0.01 ETH
+const contractAddress = '0x293980E34AaAc27Ac5c7508e1a4c5ada1687FF73'; // Transfer合约地址
+const productPriceEth = '0.0001'; // 产品价格，0.0001 ETH
 const productPrice = ethers.parseEther(productPriceEth); // 将ETH转换为Wei
 
 export default function Home() {
@@ -18,7 +20,7 @@ export default function Home() {
   const [networkError, setNetworkError] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const sepoliaChainId = '0xaa36a7' // Chain ID for Sepolia testnet
+  const sepoliaChainId = '0xaa36a7' // Sepolia测试网的Chain ID
 
   useEffect(() => {
     checkWalletConnection()
@@ -34,7 +36,7 @@ export default function Home() {
           await checkNetwork()
         }
       } catch (error) {
-        console.error('Failed to get accounts', error)
+        console.error('获取账户失败', error)
       }
     }
   }
@@ -48,7 +50,7 @@ export default function Home() {
         setNetworkError(false)
       }
     } catch (error) {
-      console.error('Failed to get network', error)
+      console.error('获取网络失败', error)
     }
   }
 
@@ -60,12 +62,8 @@ export default function Home() {
       })
       setNetworkError(false)
     } catch (error) {
-      console.error('Failed to switch network', error)
-      toast({
-        title: "Network Switch Failed",
-        description: "Failed to switch to Sepolia network. Please try manually in your wallet.",
-        variant: "destructive",
-      })
+      console.error('切换网络失败', error)
+      toast.error("无法切换到Sepolia网络。请在钱包中手动切换。")
     }
   }
 
@@ -78,111 +76,111 @@ export default function Home() {
         setConnected(true)
         await checkNetwork()
       } catch (error) {
-        console.error('Failed to connect wallet', error)
-        toast({
-          title: "Connection Failed",
-          description: "Failed to connect to your wallet. Please try again.",
-          variant: "destructive",
-        })
+        console.error('连接钱包失败', error)
+        toast.error("无法连接到您的钱包。请重试。")
       }
     } else {
-      toast({
-        title: "Wallet Not Found",
-        description: "Please install MetaMask or another Ethereum wallet.",
-        variant: "destructive",
-      })
+      toast.error("请安装MetaMask或其他以太坊钱包。")
     }
   }
 
   async function buyProduct() {
     if (!connected) {
-      toast({
-        title: "Not Connected",
-        description: "Please connect your wallet first!",
-        variant: "destructive",
-      })
-      return
+      toast.error("请先连接您的钱包！");
+      return;
     }
 
     if (networkError) {
-      toast({
-        title: "Network Error",
-        description: "Please switch to Sepolia network!",
-        variant: "destructive",
-      })
-      return
+      toast.error("请切换到Sepolia网络！");
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum)
-      const signer = await provider.getSigner()
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
       
-      const transaction = await signer.sendTransaction({
-        to: ethAddress,
+      // 创建合约实例
+      const contract = new ethers.Contract(contractAddress, TransferABI, signer);
+      
+      // 调用合约的 transferEther 函数，并发送ETH
+      const transaction: ethers.TransactionResponse = await contract.transferEther({
         value: productPrice
-      })
+      });
 
-      // 发送交易详情到服务器
-      const response = await fetch('http://localhost:2333/purchase', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: account,
-          to: ethAddress,
-          value: ethers.formatEther(productPrice),
-          transactionHash: transaction.hash,
-        }),
-      })
+      // 等待6次交易确认
+      const receipt: ethers.TransactionReceipt = await transaction.wait(6);
 
-      // 检查服务器响应是否成功
-      if (!response.ok) {
-        throw new Error('Server error')
+      if (receipt.status === 1) {
+        toast.success("购买成功，您的交易已确认！");
+      } else {
+        toast.error("交易失败。");
+        return;
       }
 
-      // 等待交易确认
-      await transaction.wait()
-      toast({
-        title: "Purchase Successful",
-        description: "Your transaction has been confirmed!",
-      })
-    } catch (error) {
-      console.error('Purchase failed', error)
-      toast({
-        title: "Purchase Failed",
-        description: "There was an error processing your purchase. Please try again.",
-        variant: "destructive",
-      })
+      // 发送交易详情到服务器
+      try {
+        const response = await fetch('http://localhost:2333/purchase', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: account,
+            to: contractAddress,
+            value: ethers.formatEther(productPrice),
+            transactionHash: transaction.hash,
+          }),
+        });
+
+        // 检查服务器响应是否成功
+        if (!response.ok) {
+          throw new Error('服务器响应失败');
+        }
+
+        toast.success("购买已记录到服务器！");
+      } catch (serverError) {
+        console.error('服务器记录失败', serverError);
+        toast.warn("购买成功，但未能记录到服务器。请稍后联系支持。");
+      }
+    } catch (error: any) {
+      console.error('购买失败', error);
+      if (error.code === 4001) { // 用户拒绝交易
+        toast.error("您已取消交易。");
+      } else if (error.message.includes("insufficient funds")) {
+        toast.error("合约余额不足，购买失败。");
+      } else {
+        toast.error(`购买失败: ${error.message || '未知错误'}`);
+      }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <ToastContainer /> {/* 显示 toast */}
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Exclusive Product</CardTitle>
-          <CardDescription>One-of-a-kind blockchain-powered item on Sepolia</CardDescription>
+          <CardTitle>独家产品</CardTitle>
+          <CardDescription>Sepolia上的独一无二的区块链产品</CardDescription>
         </CardHeader>
         <CardContent>
           <img 
             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='100%25' height='100%25' fill='white' stroke='black' stroke-width='2'/%3E%3Ctext x='50%25' y='50%25' font-size='20' text-anchor='middle' fill='black'%3EProduct%3C/text%3E%3C/svg%3E" 
-            alt="Product" 
+            alt="产品" 
             className="w-full h-[200px] object-cover rounded-md mb-4"
           />
           <p className="text-2xl font-bold text-center">{productPriceEth} ETH</p>
           {networkError && (
             <Alert variant="destructive" className="mt-4">
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Network Error</AlertTitle>
+              <AlertTitle>网络错误</AlertTitle>
               <AlertDescription>
-                Please switch to Sepolia network.
+                请切换到Sepolia网络。
                 <Button onClick={switchToSepolia} variant="outline" size="sm" className="mt-2">
-                  Switch to Sepolia
+                  切换到Sepolia
                 </Button>
               </AlertDescription>
             </Alert>
@@ -191,17 +189,17 @@ export default function Home() {
         <CardFooter className="flex flex-col gap-4">
           {!connected ? (
             <Button onClick={connectWallet} className="w-full">
-              Connect Wallet
+              连接钱包
             </Button>
           ) : (
             <Button onClick={buyProduct} className="w-full" disabled={networkError || loading}>
               <ShoppingCart className="mr-2 h-4 w-4" /> 
-              {loading ? 'Processing...' : 'Buy Now'}
+              {loading ? '处理中...' : '立即购买'}
             </Button>
           )}
           {connected && (
             <p className="text-sm text-muted-foreground text-center">
-              Connected: {account.slice(0, 6)}...{account.slice(-4)}
+              已连接: {account.slice(0, 6)}...{account.slice(-4)}
             </p>
           )}
         </CardFooter>
