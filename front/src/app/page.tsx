@@ -109,8 +109,8 @@ export default function Home() {
         value: productPrice
       });
 
-      // 等待6次交易确认
-      const receipt: ethers.TransactionReceipt = await transaction.wait(6);
+      // 等待2次交易确认
+      const receipt: ethers.TransactionReceipt = await transaction.wait(2);
 
       if (receipt.status === 1) {
         toast.success("购买成功，您的交易已确认！");
