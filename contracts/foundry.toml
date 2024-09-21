@@ -1,6 +1,7 @@
 [profile.default]
+# 设置文件系统权限，允许对当前目录进行读写操作
 fs_permissions = [{ access = "read-write", path = "./"}]
-
+private_key = "${SEPOLIA_PRIVATE_KEY}"# 私钥的环境变量
 [rpc_endpoints]
 # The RPC URLs are modified versions of the default for testing initialization.
 # mainnet = "https://eth-mainnet.alchemyapi.io/v2/WV407BEiBmjNJfKo9Uo_55u0z0ITyCOX" # Different API key.
@@ -8,7 +9,7 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 # arbitrum_one_sepolia = "https://sepolia-rollup.arbitrum.io/rpc/" # Adds a trailing slash.
 # 这是一个未定义的环境变量占位符，用于在配置中指定RPC URL
 # needs_undefined_env_var = "${UNDEFINED_RPC_URL_PLACEHOLDER}"
-sepolia = "https://omniscient-frequent-sea.ethereum-sepolia.quiknode.pro/a99cdad66be7dda479ac8c9360943647a1faa18e/"
+sepolia = "${SEPOLIA_RPC_URL}"
 
 [fmt]
 # These are all the `forge fmt` defaults.

@@ -26,9 +26,12 @@ contract TransferContract {
     }
 
     // 撤销合约并发送余额到所有者
+    // 移除此函数以避免使用 selfdestruct
+    /*
     function destroyContract() public onlyOwner {
         selfdestruct(payable(owner));
     }
+    */
 
     // 接收以太币的回退函数
     receive() external payable {}
