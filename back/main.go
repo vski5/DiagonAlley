@@ -2,6 +2,7 @@ package main
 
 import (
 	"back/controllers"
+	"back/ini"
 	"back/routers"
 
 	"github.com/gin-contrib/cors"
@@ -9,27 +10,27 @@ import (
 )
 
 func main() {
+	// 初始化配置
+	ini.InitConfig("./ini/config.ini")
+
 	router := gin.Default()
 
 	// 配置CORS中间件
 	config := cors.DefaultConfig()
-	// 在开发环境中允许本地前端访问，生产环境请替换为实际前端域名
-	config.AllowOrigins = []string{"http://localhost:3000"} // 生产环境中请使用 "http://your-frontend-domain.com"
-	// 允许的HTTP方法
-	config.AllowMethods = []string{"GET", "POST", "OPTIONS"}
-	// 允许的请求头
-	config.AllowHeaders = []string{
-		"Origin",
-		"Content-Type",
-		"Content-Length",
-		"Accept-Encoding",
-		"X-CSRF-Token",
-		"Authorization",
-	}
-	// 是否允许携带凭证（如Cookies、认证头等）
-	// 在生产环境中根据需求谨慎设置，确保安全性
-	config.AllowCredentials = true
 
+	// 设置允许的源
+	config.AllowOrigins = ini.GetCORSOrigins()
+
+	// 设置允许的HTTP方法
+	config.AllowMethods = ini.GetCORSMethods()
+
+	// 设置允许的HTTP头
+	config.AllowHeaders = ini.GetCORSHeaders()
+
+	// 设置是否允许携带凭证
+	config.AllowCredentials = ini.GetCORSAllowCredentials()
+
+	// 应用CORS中间件到路由器
 	router.Use(cors.New(config))
 
 	// 初始化控制器
@@ -39,5 +40,6 @@ func main() {
 	routers.SetupPurchaseRoutes(router, purchaseController)
 
 	// 启动服务器
-	router.Run(":2333") // 监听并在 0.0.0.0:2333 上启动服务
+	serverPort := ini.GetServerPort()
+	router.Run(":" + serverPort) // 监听并在指定端口上启动服务
 }
