@@ -1,49 +1,43 @@
 package main
 
 import (
-	"net/http"
+	"back/controllers"
+	"back/routers"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
-
-type TransactionData struct {
-	From            string `json:"from"`
-	To              string `json:"to"`
-	Value           string `json:"value"`
-	TransactionHash string `json:"transactionHash"`
-}
 
 func main() {
 	router := gin.Default()
 
 	// 配置CORS中间件
 	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true                                                                                                  // 允许所有源
-	config.AllowMethods = []string{"GET", "POST", "OPTIONS"}                                                                       // 允许的HTTP方法
-	config.AllowHeaders = []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization"} // 允许的HTTP头部
+	// 在开发环境中允许本地前端访问，生产环境请替换为实际前端域名
+	config.AllowOrigins = []string{"http://localhost:3000"} // 生产环境中请使用 "http://your-frontend-domain.com"
+	// 允许的HTTP方法
+	config.AllowMethods = []string{"GET", "POST", "OPTIONS"}
+	// 允许的请求头
+	config.AllowHeaders = []string{
+		"Origin",
+		"Content-Type",
+		"Content-Length",
+		"Accept-Encoding",
+		"X-CSRF-Token",
+		"Authorization",
+	}
+	// 是否允许携带凭证（如Cookies、认证头等）
+	// 在生产环境中根据需求谨慎设置，确保安全性
+	config.AllowCredentials = true
 
 	router.Use(cors.New(config))
 
+	// 初始化控制器
+	var purchaseController controllers.PurchaseController = controllers.NewPurchaseController()
+
 	// 设置路由
-	router.POST("/purchase", handlePurchase)
+	routers.SetupPurchaseRoutes(router, purchaseController)
 
 	// 启动服务器
 	router.Run(":2333") // 监听并在 0.0.0.0:2333 上启动服务
-}
-
-func handlePurchase(c *gin.Context) {
-	var data TransactionData
-	if err := c.BindJSON(&data); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request data"})
-		return
-	}
-
-	// 打印接收到的数据
-	// fmt.Printf("Purchase received:\nFrom: %s\nTo: %s\nValue: %s ETH\nTransaction Hash: %s\n", data.From, data.To, data.Value, data.TransactionHash)
-
-	// 响应前端
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Purchase request received and processed",
-	})
 }
