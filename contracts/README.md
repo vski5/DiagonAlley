@@ -41,7 +41,8 @@ contracts\script\deploy.s.sol为部署的脚本
 
 
 
-### 部署合约forge script script/Deploy.s.sol:DeployScript --rpc-url sepolia --private-key SEPOLIA_PRIVATE_KEY --broadcast -vv
+### 部署合约在ETH上：
+forge script script/Deploy.s.sol:DeployScript --rpc-url sepolia --private-key SEPOLIA_PRIVATE_KEY --broadcast -vv
 
 用作实验的两个（一样的代码的）合约，V1版本，没有撤销合约功能，只给固定的地址转账：
 
@@ -58,3 +59,21 @@ Block: 6731067
 Paid: 0.001739041513436266 ETH (158678 gas * 10.959562847 gwei)
 
 ✅ Sequence #1 on sepolia | Total Paid: 0.001739041513436266 ETH (158678 gas * avg 10.959562847 gwei)
+
+
+
+## NeoX测试网的部署
+
+forge script script/Deploy.s.sol:DeployScript --rpc-url https://neoxt4seed1.ngd.network --private-key NEOX_PRIVATE_KEY --broadcast -vv
+
+TestNet Configuration
+
+
+| Name      | Value                                        |
+|-----------|----------------------------------------------|
+| TestNet   | NeoX T4                                      |
+| Chain ID  | 12227332                                     |
+| RPC Endpoint | [https://neoxt4seed1.ngd.network](https://neoxt4seed1.ngd.network) |
+| WSS Endpoint | [wss://neoxt4wss1.ngd.network](wss://neoxt4wss1.ngd.network) |
+| Block Explorer | [https://xt4scan.ngd.network/](https://xt4scan.ngd.network/) |
+| Currency Symbol | GAS                                    |
