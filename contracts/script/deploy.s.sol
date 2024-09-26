@@ -7,7 +7,7 @@
    contract DeployScript is Script {
        function run() public {
            vm.startBroadcast();
-           // 部署合约，不保存实例
+           // 部署更新后的 TransferContract 合约
            new TransferContract();
            vm.stopBroadcast();
        }

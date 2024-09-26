@@ -88,3 +88,17 @@ Block: 488976
 Paid: 0.00636368 ETH (159092 gas * 40 gwei)
 
 ✅ Sequence #1 on 12227332 | Total Paid: 0.00636368 ETH (159092 gas * avg 40 gwei)
+
+##### 12227332 NFT铸造
+✅  [Success]Hash: 0x3137db4c22e2bc48968d009b42e5dd805da6cffea2cc6751f0370628a2baab03
+Contract Address: 0x1C876eB2106aB84BFBbF6417Fe3313D0B62C3447
+Block: 489536
+Paid: 0.04274288 ETH (1068572 gas * 40 gwei)
+
+✅ Sequence #1 on 12227332 | Total Paid: 0.04274288 ETH (1068572 gas * avg 40 gwei)
+
+
+==========================
+
+
+==========================

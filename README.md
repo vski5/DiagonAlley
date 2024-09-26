@@ -100,6 +100,7 @@ flowchart TD
 4. **编译智能合约**：
     使用 **Foundry** 进行编译和部署：
     ```bash
+    npm install package-lock.json
     forge build
     forge script deploy.s.sol:DeployContract --rpc-url <NETWORK_URL>
     ```

@@ -10,7 +10,7 @@ import { toast, ToastContainer } from 'react-toastify'; // 使用 react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // 引入 react-toastify 样式
 import TransferABI from '@/abi/TransferABI.json'; // 引入Transfer合约ABI
 
-const contractAddress = '0x9296BBf2937e6bD7B39e50db76e806c3753AD2Bb'; // Transfer合约地址
+const contractAddress = '0x1C876eB2106aB84BFBbF6417Fe3313D0B62C3447'; // Transfer合约地址
 const productPriceGAS = '0.01'; // 产品价格，0.0001 GAS
 const productPrice = parseEther(productPriceGAS); // 将GAS转换为Wei
 
@@ -101,13 +101,13 @@ export default function Home() {
     try {
       const provider = new BrowserProvider((window as any).ethereum);
       const signer = await provider.getSigner();
-      
+
       // 创建合约实例
       const contract = new Contract(contractAddress, TransferABI, signer);
-      
-      // 调用合约的 transferEther 函数，并发送GAS
-      const transaction = await contract.transferEther({
-        value: productPrice
+
+      // 调用合约的 transferAndMint 函数，并发送ETH
+      const transaction = await contract.transferAndMint({
+        value: parseEther("0.01")  // 确保这里的数值至少为0.01 ETH
       });
 
       // 等待2次交易确认
@@ -170,9 +170,9 @@ export default function Home() {
           <CardDescription>NeoX T4上的独一无二的区块链产品</CardDescription>
         </CardHeader>
         <CardContent>
-          <img 
-            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='100%25' height='100%25' fill='white' stroke='black' stroke-width='2'/%3E%3Ctext x='50%25' y='50%25' font-size='20' text-anchor='middle' fill='black'%3EProduct%3C/text%3E%3C/svg%3E" 
-            alt="产品" 
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='100%25' height='100%25' fill='white' stroke='black' stroke-width='2'/%3E%3Ctext x='50%25' y='50%25' font-size='20' text-anchor='middle' fill='black'%3EProduct%3C/text%3E%3C/svg%3E"
+            alt="产品"
             className="w-full h-[200px] object-cover rounded-md mb-4"
           />
           <p className="text-2xl font-bold text-center">{productPriceGAS} GAS</p>
@@ -196,7 +196,7 @@ export default function Home() {
             </Button>
           ) : (
             <Button onClick={buyProduct} className="w-full" disabled={networkError || loading}>
-              <ShoppingCart className="mr-2 h-4 w-4" /> 
+              <ShoppingCart className="mr-2 h-4 w-4" />
               {loading ? '处理中...' : '立即购买'}
             </Button>
           )}

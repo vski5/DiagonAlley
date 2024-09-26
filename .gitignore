@@ -26,4 +26,9 @@ front/*.js.map
 
 # 忽略 区块链密钥
 contracts/foundry.toml
-contracts/lib/forge-std/foundry.toml
+contracts/lib/forge-std/foundry.toml\
+
+# 忽略合约目录中的 node_modules 和 out 目录
+contracts/node_modules/
+contracts/out/
+contracts/node_modules/
