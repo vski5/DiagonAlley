@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import { BrowserProvider, Contract, parseEther, formatEther } from 'ethers';  // 使用 BrowserProvider 替代 Web3Provider
+import { BrowserProvider, Contract, parseEther, formatEther, ethers } from 'ethers';  // 使用 BrowserProvider 替代 Web3Provider
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShoppingCart, AlertCircle } from "lucide-react";
@@ -9,13 +9,24 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast, ToastContainer } from 'react-toastify'; // 使用 react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // 引入 react-toastify 样式
 import TransferABI from '@/abi/TransferABI.json'; // 引入Transfer合约ABI
+import { fetchNFTs } from './nft/nftUtils';  // 导入fetchNFTs函数
 
 const contractAddress = '0x1C876eB2106aB84BFBbF6417Fe3313D0B62C3447'; // Transfer合约地址
 const productPriceGAS = '0.01'; // 产品价格，0.0001 GAS
 const productPrice = parseEther(productPriceGAS); // 将GAS转换为Wei
 
-const nftContractAddress = '0x1C876eB2106aB84BFBbF6417Fe3313D0B62C3447'; // NFT合约地址
-const nftABI = TransferABI; // 使用Transfer合约的ABI
+// 设置自定义网络信息
+const customNetwork = {
+  name: "NeoX T4",
+  chainId: 12227332, // 根据实际情况可能需要调整
+  rpcUrl: "https://neoxt4seed1.ngd.network"
+};
+
+// 创建自定义提供者
+const provider = new ethers.JsonRpcProvider(customNetwork.rpcUrl, {
+  name: customNetwork.name,
+  chainId: customNetwork.chainId
+});
 
 export default function Home() {
   const [account, setAccount] = useState('');
@@ -29,7 +40,8 @@ export default function Home() {
   useEffect(() => {
     checkWalletConnection();
     if (connected) {
-      fetchNFTs();
+      const provider = new BrowserProvider((window as any).ethereum);
+      fetchNFTs(account, provider, neoXT4ChainId).then(setNfts);
     }
   }, [account, connected]);
   
@@ -37,22 +49,32 @@ export default function Home() {
   useEffect(() => {
     checkWalletConnection();
     if (connected) {
-      fetchNFTs();
+      fetchNFTs(account, provider, neoXT4ChainId).then(setNfts);
     }
   }, [account, connected]);
 
   async function checkWalletConnection() {
-    if (typeof window !== 'undefined' && (window as any).ethereum !== undefined) {
+    // 检查window.ethereum对象是否存在
+    if (typeof window !== 'undefined' && (window as any).ethereum) {
       try {
         const accounts = await (window as any).ethereum.request({ method: 'eth_accounts' });
         if (accounts.length > 0) {
           setAccount(accounts[0]);
           setConnected(true);
           await checkNetwork();
+        } else {
+          // 如果没有账户，可能是用户未登录MetaMask
+          console.error("未检测到账户。请登录MetaMask。");
+          toast.error("未检测到账户。请登录MetaMask。");
         }
       } catch (error) {
         console.error('获取账户失败', error);
+        toast.error("获取账户失败，请检查MetaMask是否正确安装和配置。");
       }
+    } else {
+      // 如果window.ethereum不存在，提示用户安装MetaMask
+      console.error("Web3提供者未初始化。请安装MetaMask或其他以太坊钱包。");
+      toast.error("Web3提供者未初始化。请安装MetaMask或其他以太坊钱包。");
     }
   }
 
@@ -61,12 +83,15 @@ export default function Home() {
       const chainIdHex = await (window as any).ethereum.request({ method: 'eth_chainId' });
       const chainIdNum = parseInt(chainIdHex, 16);
       if (chainIdNum !== neoXT4ChainId) {
-        setNetworkError(true);
+        console.error(`当前连接的网络不是预期的网络。预期的Chain ID是 ${neoXT4ChainId}，当前的Chain ID是 ${chainIdNum}。`);
+        toast.error(`当前连接的网络不是预期的网络。预期的Chain ID是 ${neoXT4ChainId}，当前的Chain ID是 ${chainIdNum}。`);
+        await switchToNeoXT4(); // 尝试自动切换到正确的网络
       } else {
         setNetworkError(false);
       }
     } catch (error) {
       console.error('获取网络失败', error);
+      toast.error("无法获取网络信息。请检查您的网络连接。");
     }
   }
 
@@ -74,12 +99,19 @@ export default function Home() {
     try {
       await (window as any).ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0xBA4B4C' }], // 保持链ID为16进制字符串
+        params: [{ chainId: `0x${customNetwork.chainId.toString(16)}` }], // 将Chain ID转换为16进制字符串
       });
       setNetworkError(false);
+      toast.success("已成功切换到NeoX T4网络。");
     } catch (error) {
       console.error('切换网络失败', error);
-      toast.error("无法切换到NeoX T4网络。请在钱包中手动切换。");
+      toast.error("无法自动切换到NeoX T4网络。请在钱包中手动切换。");
+      // 提供一个按钮让用户手动切换网络
+      return (
+        <Button onClick={() => switchToNeoXT4()} className="mt-4">
+          尝试再次切换到NeoX T4
+        </Button>
+      );
     }
   }
 
@@ -176,45 +208,16 @@ export default function Home() {
     }
   }
 
-  async function fetchNFTs() {
-    if (!account) return;
-
-    try {
-      const provider = new BrowserProvider(window.ethereum);
-      const nftContract = new Contract(nftContractAddress, nftABI, provider);
-      const balance = await nftContract.balanceOf(account);
-      const items = [];
-
-      for (let i = 0; i < balance.toNumber(); i++) {
-        const tokenId = await nftContract.tokenOfOwnerByIndex(account, i);
-        const tokenUri = await nftContract.tokenURI(tokenId);
-        const response = await fetch(tokenUri);
-        const metadata = await response.json();
-        items.push({ image: metadata.image, name: metadata.name, description: metadata.description });
-      }
-
-      if (items.length === 0) {
-        items.push({ image: '', name: '没有NFT', description: '' });
-      }
-
-      setNfts(items);
-    } catch (error) {
-      console.error('获取NFT失败', error);
-      toast.error("无法获取NFT信息。");
-    }
-  }
-
-  async function resolveEnsName(name) {
+  async function resolveEnsName(name: string) {
     try {
       const address = await provider.resolveName(name);
       return address;
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'UNSUPPORTED_OPERATION') {
         console.error('当前网络不支持ENS');
-        // 可以返回一个默认值或者null
         return null;
       }
-      throw error; // 重新抛出其他错误
+      throw error;
     }
   }
 
@@ -276,7 +279,7 @@ export default function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {nfts.length > 0 ? (
                   nfts.map((nft, index) => (
-                    <Card key={index} className="overflow-hidden">
+                    <Card key={index} className="w-full overflow-hidden">
                       <CardContent className="p-0">
                         <img 
                           src={nft.image || '/placeholder.svg?height=200&width=200'} 
