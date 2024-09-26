@@ -2,6 +2,11 @@
 # 设置文件系统权限，允许对当前目录进行读写操作
 fs_permissions = [{ access = "read-write", path = "./"}]
 private_key = "${SEPOLIA_PRIVATE_KEY}"# 私钥的环境变量
+gas_price = 20000000000   # 20 gwei，基本费用
+max_fee_per_gas = 40000000000001  # 40 gwei，总费用上限
+max_priority_fee_per_gas = 20000000000000  # 20 gwei，小费
+
+
 [rpc_endpoints]
 # The RPC URLs are modified versions of the default for testing initialization.
 # mainnet = "https://eth-mainnet.alchemyapi.io/v2/WV407BEiBmjNJfKo9Uo_55u0z0ITyCOX" # Different API key.
@@ -10,6 +15,8 @@ private_key = "${SEPOLIA_PRIVATE_KEY}"# 私钥的环境变量
 # 这是一个未定义的环境变量占位符，用于在配置中指定RPC URL
 # needs_undefined_env_var = "${UNDEFINED_RPC_URL_PLACEHOLDER}"
 sepolia = "${SEPOLIA_RPC_URL}"
+neox = "https://neoxt4seed1.ngd.network"
+
 
 [fmt]
 # These are all the `forge fmt` defaults.

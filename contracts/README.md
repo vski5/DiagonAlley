@@ -64,7 +64,7 @@ Paid: 0.001739041513436266 ETH (158678 gas * 10.959562847 gwei)
 
 ## NeoX测试网的部署
 
-forge script script/Deploy.s.sol:DeployScript --rpc-url https://neoxt4seed1.ngd.network --private-key NEOX_PRIVATE_KEY --broadcast -vv
+forge script ./script/Deploy.s.sol:DeployScript --rpc-url https://neoxt4seed1.ngd.network --private-key NEOX_PRIVATE_KEY --broadcast -vv
 
 TestNet Configuration
 
@@ -77,3 +77,14 @@ TestNet Configuration
 | WSS Endpoint | [wss://neoxt4wss1.ngd.network](wss://neoxt4wss1.ngd.network) |
 | Block Explorer | [https://xt4scan.ngd.network/](https://xt4scan.ngd.network/) |
 | Currency Symbol | GAS                                    |
+
+## 部署的合约：
+
+### V1 仅转账用作测试
+##### 12227332
+✅  [Success]Hash: 0xeed5247b7cdd7ada54a6f7839e7b153ba3207eb58d2363bfa31c20716d9e66e7
+Contract Address: 0x9296BBf2937e6bD7B39e50db76e806c3753AD2Bb
+Block: 488976
+Paid: 0.00636368 ETH (159092 gas * 40 gwei)
+
+✅ Sequence #1 on 12227332 | Total Paid: 0.00636368 ETH (159092 gas * avg 40 gwei)

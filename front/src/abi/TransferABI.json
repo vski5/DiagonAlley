@@ -1,22 +1,31 @@
 [
     {
+      "type": "constructor",
       "inputs": [],
-      "name": "transferEther",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
+      "stateMutability": "nonpayable"
     },
     {
-      "inputs": [],
+      "type": "receive",
+      "stateMutability": "payable"
+    },
+    {
+      "type": "function",
       "name": "getBalance",
+      "inputs": [],
       "outputs": [
         {
-          "internalType": "uint256",
           "name": "",
-          "type": "uint256"
+          "type": "uint256",
+          "internalType": "uint256"
         }
       ],
-      "stateMutability": "view",
-      "type": "function"
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "transferEther",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "payable"
     }
   ]

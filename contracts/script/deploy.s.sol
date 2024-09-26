@@ -1,12 +1,14 @@
-   // scripts/deploy.s.sol
+   // contracts/script/deploy.s.sol
    pragma solidity ^0.8.0;
-
+   
    import "forge-std/Script.sol";
-   import "../src/TransferContract.sol"; // 确保导入路径正确，如果合约名称为 TransferContract，建议重命名文件或调整导入路径
+   import "../src/TransferContract.sol";
 
    contract DeployScript is Script {
        function run() public {
-           vm.startBroadcast(); // 开始广播交易
-           new TransferContract(); // 部署 TransferContract 合约
-           vm.stopBroadcast(); // 停止广播交易
+           vm.startBroadcast();
+           // 部署合约，不保存实例
+           new TransferContract();
+           vm.stopBroadcast();
+       }
    }
