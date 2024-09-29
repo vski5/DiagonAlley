@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'; // 引入 react-toastify 样式
 import TransferABI from '@/abi/TransferABI.json'; // 引入Transfer合约ABI
 import { fetchNFTs } from './nft/nftUtils';  // 导入fetchNFTs函数
 
-const contractAddress = '0x1C876eB2106aB84BFBbF6417Fe3313D0B62C3447'; // Transfer合约地址
+const contractAddress = '0x675Bb75C09f191c89563CF6Cfd5cE76eE71A7851'; // Transfer合约地址
 const productPriceGAS = '0.01'; // 产品价格，0.0001 GAS
 const productPrice = parseEther(productPriceGAS); // 将GAS转换为Wei
 
@@ -152,12 +152,12 @@ export default function Home() {
       // 创建合约实例
       const contract = new Contract(contractAddress, TransferABI, signer);
 
-      // 调用合约的 transferAndMint 函数，并发送ETH
-      const transaction = await contract.transferAndMint({
+      // 调用合约的 mintNFT 函数，并发送ETH
+      const transaction = await contract.mintNFT({
         value: parseEther("0.01")  // 确保这里的数值至少为0.01 ETH
       });
 
-      // 等待2次交易确认
+      // 等待交易确认
       const receipt = await transaction.wait(2);
 
       if (receipt.status === 1) {
