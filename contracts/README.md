@@ -96,9 +96,6 @@ Block: 489536
 Paid: 0.04274288 ETH (1068572 gas * 40 gwei)
 
 ✅ Sequence #1 on 12227332 | Total Paid: 0.04274288 ETH (1068572 gas * avg 40 gwei)
-
-
-==========================
-
-
-==========================
+##### 12227332 有时限的NFT铸造和销毁
+TransferContract 部署在地址：0x4Fb405F3ff8d6A01F536F76b703e9F352A5A5EE8
+NFTDestroyer 部署在地址：0x36894243353935E5C1d7458Ccb6f395e6cF7F5D6
