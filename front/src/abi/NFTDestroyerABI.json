@@ -1,0 +1,52 @@
+[
+        {
+            "type": "constructor",
+            "inputs": [
+                {
+                    "name": "transferContractAddress",
+                    "type": "address",
+                    "internalType": "address payable"
+                }
+            ],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "batchCheckAndDestroy",
+            "inputs": [
+                {
+                    "name": "tokenIds",
+                    "type": "uint256[]",
+                    "internalType": "uint256[]"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "checkAndDestroy",
+            "inputs": [
+                {
+                    "name": "tokenId",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "updateTransferContract",
+            "inputs": [
+                {
+                    "name": "newTransferContractAddress",
+                    "type": "address",
+                    "internalType": "address payable"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        }
+    ]

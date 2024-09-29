@@ -113,7 +113,7 @@ contract TransferContract is ERC721, Ownable, ReentrancyGuard {
      * @param tokenId 要查询的NFT的ID。
      * @return 指定NFT的铸造时间（Unix时间戳）。
      */
-    function getMintTimestamp(uint256 tokenId) external view returns (uint256) {
+    function getMintTimestamp(uint256 tokenId) public view returns (uint256) {
         require(_exists(tokenId), "NFT does not exist");
         return _mintTimestamps[tokenId];
     }
