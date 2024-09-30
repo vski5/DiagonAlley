@@ -279,24 +279,17 @@ export default function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {nfts.length > 0 ? (
                   nfts.map((nft, index) => (
-                    <Card key={index} className="w-full overflow-hidden">
-                      <CardContent className="p-0">
-                        <img 
-                          src={nft.image || '/placeholder.svg?height=200&width=200'} 
-                          alt={`NFT ${index}`} 
-                          className="w-full h-40 object-cover"
-                        />
-                        <div className="p-4">
-                          <h3 className="font-semibold text-lg">{nft.name}</h3>
-                          {typeof nft.description === 'object' ? (
-                            <>
-                              <p className="text-sm text-gray-500">Mint Time: {nft.description.mint_time}</p>
-                              <p className="text-sm text-gray-500">Expiry Time: {nft.description.expiry_time}</p>
-                            </>
-                          ) : (
-                            <p className="text-sm text-gray-600 mt-1">{nft.description}</p>
-                          )}
-                        </div>
+                    <Card key={index} className="w-full">
+                      <CardContent className="p-4">
+                        <h3 className="font-semibold text-lg">{nft.name}</h3>
+                        {typeof nft.description === 'object' ? (
+                          <>
+                            <p className="text-sm text-gray-500">Mint Time: {nft.description.mint_time}</p>
+                            <p className="text-sm text-gray-500">Expiry Time: {nft.description.expiry_time}</p>
+                          </>
+                        ) : (
+                          <p className="text-sm text-gray-600 mt-1">{nft.description}</p>
+                        )}
                       </CardContent>
                     </Card>
                   ))
