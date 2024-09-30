@@ -303,7 +303,9 @@ export default function Home() {
                 ) : (
                   <Card className="col-span-full">
                     <CardContent className="p-4 text-center">
-                      <p className="text-lg text-gray-500">没有 NFT</p>
+                      <p className="text-lg text-gray-500">
+                        提示: 用户 {account ? `${account.slice(0, 6)}...${account.slice(-4)}` : '未连接'} 没有持有任何 NFT
+                      </p>
                     </CardContent>
                   </Card>
                 )}
