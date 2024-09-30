@@ -48,8 +48,8 @@ contract TransferContract is ERC721Enumerable, Ownable, ReentrancyGuard {
         string memory description = string(
             abi.encodePacked(
                 '{"description": {',
-                '"mint_time": "', uintToISO8601(block.timestamp), '",',
-                '"expiry_time": "', uintToISO8601(block.timestamp + 5 minutes), '"',
+                '"mint_time": ', Strings.toString(block.timestamp), ',',
+                '"expiry_time": ', Strings.toString(block.timestamp + 5 minutes),
                 '}}'
             )
         );

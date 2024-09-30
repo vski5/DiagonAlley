@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'; // 引入 react-toastify 样式
 import TransferABI from '@/abi/TransferABI.json'; // 引入Transfer合约ABI
 import { fetchNFTs } from './nft/nftUtils';  // 导入fetchNFTs函数
 
-const contractAddress = '0x604E846E1201e9bf9D49a0B126e374bD2e46ca17'; // Transfer合约地址
+const contractAddress = '0x7b33012DCB61D8e377B4201842A8Be27d79A3576'; // Transfer合约地址
 const productPriceGAS = '0.01'; // 产品价格，0.0001 GAS
 const productPrice = parseEther(productPriceGAS); // 将GAS转换为Wei
 
