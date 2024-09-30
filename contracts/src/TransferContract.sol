@@ -4,12 +4,14 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-
+import "@openzeppelin/contracts/utils/Base64.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 /**
  * @title TransferContract
  * @dev ERC721合约，支持押金管理和时间条件下的NFT销毁。
  */
-contract TransferContract is ERC721, Ownable, ReentrancyGuard {
+contract TransferContract is ERC721Enumerable, Ownable, ReentrancyGuard {
     address payable private constant recipient = payable(0x00000f6a1D910f733Ebf01647DAD8c4CbED82ba2);
     uint256 private _tokenIdCounter;
 
@@ -19,11 +21,14 @@ contract TransferContract is ERC721, Ownable, ReentrancyGuard {
     // 记录每个tokenId的铸造者
     mapping(uint256 => address) private _minters;
 
+    // 记录每个tokenId的Token URI
+    mapping(uint256 => string) private _tokenURIs;
+
     // 事件记录NFT的销毁
     event NFTDestroyed(uint256 indexed tokenId, address indexed destroyedBy, address indexed refundTo);
 
     /**
-     * @dev 构造函数，初始化ERC721合约名称和符号。
+     * @dev 构造函数，初始化ERC721合约名称和符号，并设置所有者。
      */
     constructor() ERC721("MyNFT", "MNFT") Ownable(msg.sender) {}
 
@@ -34,13 +39,31 @@ contract TransferContract is ERC721, Ownable, ReentrancyGuard {
     function mintNFT() public payable nonReentrant {
         require(msg.value == 0.01 ether, "Deposit must be 0.01 ETH");
 
-        _safeMint(msg.sender, _tokenIdCounter);
-        _mintTimestamps[_tokenIdCounter] = block.timestamp;
-        _minters[_tokenIdCounter] = msg.sender;
-        emit Transfer(address(0), msg.sender, _tokenIdCounter);
+        uint256 tokenId = _tokenIdCounter;
+        _safeMint(msg.sender, tokenId);
+        _mintTimestamps[tokenId] = block.timestamp;
+        _minters[tokenId] = msg.sender;
+
+        // 生成描述的JSON
+        string memory description = string(
+            abi.encodePacked(
+                '{"description": {',
+                '"mint_time": "', uintToISO8601(block.timestamp), '",',
+                '"expiry_time": "', uintToISO8601(block.timestamp + 5 minutes), '"',
+                '}}'
+            )
+        );
+
+        // 编码为Base64
+        string memory encodedJson = Base64.encode(bytes(description));
+
+        // 设置Token URI
+        string memory tokenUri = string(abi.encodePacked("data:application/json;base64,", encodedJson));
+        _setTokenURI(tokenId, tokenUri);
+
+        emit Transfer(address(0), msg.sender, tokenId);
         _tokenIdCounter++;
     }
-
 
     /**
      * @dev 销毁NFT函数，根据调用者和时间条件确定是否允许销毁。
@@ -53,24 +76,21 @@ contract TransferContract is ERC721, Ownable, ReentrancyGuard {
         address minter = _minters[tokenId];
         require(minter != address(0), "Invalid minter address");
 
-        if (block.timestamp < mintTime + 10 minutes) {
-            // 铸造后10分钟内，只有铸造者可以销毁
-            require(msg.sender == minter, "Only minter can destroy NFT within 10 minutes");
-        } else {
-            // 超过10分钟，任何人都可以销毁
-            // 无需额外权限
+        if (block.timestamp < mintTime + 5 minutes) {
+            // 铸造后5分钟内，只有铸造者可以销毁
+            require(msg.sender == minter, "Only minter can destroy NFT within 5 minutes");
         }
 
         _burn(tokenId);
 
         // 根据销毁时间，将押金退还给铸造者或指定地址
-        if (block.timestamp < mintTime + 10 minutes) {
-            // 10分钟内，退还押金给铸造者
+        if (block.timestamp < mintTime + 5 minutes) {
+            // 5分钟内，退还押金给铸造者
             (bool sent, ) = payable(minter).call{value: 0.01 ether}("");
             require(sent, "Failed to refund deposit to minter");
             emit NFTDestroyed(tokenId, msg.sender, minter);
         } else {
-            // 超过10分钟，押金退还给指定地址
+            // 超过5分钟，押金退还给指定地址
             (bool sent, ) = recipient.call{value: 0.01 ether}("");
             require(sent, "Failed to refund deposit to recipient");
             emit NFTDestroyed(tokenId, msg.sender, recipient);
@@ -132,6 +152,37 @@ contract TransferContract is ERC721, Ownable, ReentrancyGuard {
      * @dev 接收以太币的回退函数。
      */
     receive() external payable {}
+
+    /**
+     * @dev 将Unix时间戳转换为ISO 8601格式字符串。
+     * @param timestamp Unix时间戳。
+     * @return ISO 8601格式的时间字符串。
+     */
+    function uintToISO8601(uint256 timestamp) internal pure returns (string memory) {
+        // 这里需要实现时间戳到ISO8601字符串的转换
+        // Solidity不支持复杂的字符串操作，通常需要在链下完成
+        // 这里只返回时间戳的字符串表示
+        return Strings.toString(timestamp);
+    }
+
+    /**
+     * @dev 设置Token URI
+     * @param tokenId NFT的ID。
+     * @param _tokenURI 要设置的Token URI。
+     */
+    function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual {
+        _tokenURIs[tokenId] = _tokenURI;
+    }
+
+    /**
+     * @dev 重写ERC721的tokenURI函数，返回存储的Token URI。
+     * @param tokenId NFT的ID。
+     * @return 存储的Token URI。
+     */
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+        return _tokenURIs[tokenId];
+    }
 
     function _exists(uint256 tokenId) internal view returns (bool) {
         return _ownerOf(tokenId) != address(0);

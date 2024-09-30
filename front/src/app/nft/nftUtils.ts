@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import { toast } from 'react-toastify';
 import TransferABI from '@/abi/TransferABI.json';
 
-const nftContractAddress = '0x675Bb75C09f191c89563CF6Cfd5cE76eE71A7851';
+const nftContractAddress = '0x604E846E1201e9bf9D49a0B126e374bD2e46ca17';
 const nftABI = TransferABI;
 const networkUrl = 'https://neoxt4seed1.ngd.network';
 
@@ -42,9 +42,23 @@ export const fetchNFTs = async (ownerAddress: string) => {
 
         const response = await fetch(tokenUri);
         if (!response.ok) throw new Error(`无法从URI获取元数据: ${tokenUri}`);
-        const metadata = await response.json();
+        const metadataText = await response.text();
+        console.log(`Metadata Text: ${metadataText}`);
 
-        items.push({ image: metadata.image, name: metadata.name, description: metadata.description });
+        let metadata;
+        try {
+          const decodedText = atob(metadataText.split(',')[1]);
+          metadata = JSON.parse(decodedText);
+        } catch (e) {
+          console.error("解码或解析元数据失败", e);
+          metadata = { description: metadataText }; // 使用原始文本作为描述
+        }
+
+        items.push({
+          image: metadata.image || "",
+          name: metadata.name || `NFT #${tokenId.toString()}`,
+          description: metadata.description || metadataText // 如果解析失败，使用原始文本
+        });
       } catch (itemError) {
         console.error(`获取第 ${i + 1} 个 NFT 时出错:`, itemError);
         items.push({ name: `NFT #${i + 1}`, description: `获取此 NFT 信息时出错: ${itemError.message}`, image: "" });

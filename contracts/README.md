@@ -97,7 +97,8 @@ Paid: 0.04274288 ETH (1068572 gas * 40 gwei)
 
 ✅ Sequence #1 on 12227332 | Total Paid: 0.04274288 ETH (1068572 gas * avg 40 gwei)
 ##### 有时限的NFT铸造和销毁
-用于创造nft的合约TransferContract 部署在地址：0x675Bb75C09f191c89563CF6Cfd5cE76eE71A7851  
+用于创造nft的合约TransferContract 部署在地址：0x604E846E1201e9bf9D49a0B126e374bD2e46ca17 
 ABI在front\src\abi\TransferABI.json
-用于销毁的合约NFTDestroyer部署在地址： 0xd655c9689CA81aeC8D8eF4cF3052e9f217926420  
+用于销毁的合约NFTDestroyer部署在地址： 0xaE6119CCcDe2905ED96f6C250e8aCCE9865e4B19  
 ABI在front\src\abi\NFTDestroyerABI.json
+

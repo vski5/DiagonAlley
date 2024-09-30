@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'; // 引入 react-toastify 样式
 import TransferABI from '@/abi/TransferABI.json'; // 引入Transfer合约ABI
 import { fetchNFTs } from './nft/nftUtils';  // 导入fetchNFTs函数
 
-const contractAddress = '0x675Bb75C09f191c89563CF6Cfd5cE76eE71A7851'; // Transfer合约地址
+const contractAddress = '0x604E846E1201e9bf9D49a0B126e374bD2e46ca17'; // Transfer合约地址
 const productPriceGAS = '0.01'; // 产品价格，0.0001 GAS
 const productPrice = parseEther(productPriceGAS); // 将GAS转换为Wei
 
@@ -288,7 +288,14 @@ export default function Home() {
                         />
                         <div className="p-4">
                           <h3 className="font-semibold text-lg">{nft.name}</h3>
-                          <p className="text-sm text-gray-600 mt-1">{nft.description}</p>
+                          {typeof nft.description === 'object' ? (
+                            <>
+                              <p className="text-sm text-gray-500">Mint Time: {nft.description.mint_time}</p>
+                              <p className="text-sm text-gray-500">Expiry Time: {nft.description.expiry_time}</p>
+                            </>
+                          ) : (
+                            <p className="text-sm text-gray-600 mt-1">{nft.description}</p>
+                          )}
                         </div>
                       </CardContent>
                     </Card>
