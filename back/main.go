@@ -36,11 +36,15 @@ func main() {
 	// 应用CORS中间件到路由器
 	router.Use(cors.New(config))
 
-	// 初始化控制器
+	// 初始化购买的控制器 /purchase
 	var purchaseController controllers.PurchaseController = controllers.NewPurchaseController()
-
-	// 设置路由
+	// 设置购买的路由
 	routers.SetupPurchaseRoutes(router, purchaseController)
+
+	// 初始化商品的控制器 /goods
+	var goodsController controllers.GoodsController = controllers.NewGoodsController()
+	// 设置商品的路由
+	routers.SetupGoodsRoutes(router, goodsController)
 
 	dsn := ini.GetDatabaseKey()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
