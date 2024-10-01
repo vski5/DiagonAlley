@@ -4,9 +4,12 @@ import (
 	"back/controllers"
 	"back/ini"
 	"back/routers"
+	"fmt"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -39,6 +42,13 @@ func main() {
 	// 设置路由
 	routers.SetupPurchaseRoutes(router, purchaseController)
 
+	dsn := ini.GetDatabaseKey()
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		fmt.Println("数据库连接失败:", err)
+	} else {
+		fmt.Println("数据库连接成功", db)
+	}
 	// 启动服务器
 	serverPort := ini.GetServerPort()
 	router.Run(":" + serverPort) // 监听并在指定端口上启动服务

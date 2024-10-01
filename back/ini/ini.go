@@ -80,3 +80,7 @@ func GetCORSAllowCredentials() bool {
 func GetSecretKey() string {
 	return cfg.Section("security").Key("secret_key").String()
 }
+
+func GetDatabaseKey() string {
+	return cfg.Section("database").Key("db_key").String()
+}

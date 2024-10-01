@@ -120,7 +120,6 @@ flowchart TD
     确保 **Chainlink 预言机** 已配置好，并在智能合约中添加预言机合约地址。
 
 ---
-
 ### 开发注意事项
 
 - 确保用户的 **MetaMask** 连接到正确的区块链网络。
@@ -134,16 +133,19 @@ flowchart TD
 |-- README.md                  # 项目的主要文档
 
 |-- back                       # 后端目录
+|   |-- controllers
+|   |   `-- purchaseController.go  # 处理购买请求的控制器
+|   |-- go.mod                     # Go 语言模块依赖文件
+|   |-- go.sum                     # Go 语言模块依赖校验文件
+|   |-- ini
+|   |   |-- config.ini             # 配置文件
+|   |   `-- ini.go                 # 读取和解析 ini 配置文件的逻辑
+|   |-- main.go                    # 后端服务入口文件
+|   |-- model
+|   |   `-- purchaseModel.go        # 购买请求的数据模型
+|   `-- routers
+|       `-- purchaseRouter.go       # 定义购买请求路由
 
-|   |-- controllers            # 控制器目录
-
-|   |   `-- purchaseController.go  # 购买请求控制器
-
-|   |-- go.mod                 # Go 语言模块依赖文件
-
-|   |-- go.sum                 # Go 语言模块依赖校验文件
-
-|   `-- main.go                # 后端服务入口文件
 
 |-- contracts                  # 智能合约目录
 
