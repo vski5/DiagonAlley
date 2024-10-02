@@ -126,8 +126,7 @@ flowchart TD
 - 智能合约部署完成后，更新合约地址到前端配置中。
 - MongoDB 用于存储和检索交易记录，以支持 RWA 资产的交易和追踪。
 
----
-```
+---```
 .
 
 |-- README.md                  # 项目的主要文档
@@ -163,27 +162,31 @@ flowchart TD
 |-- flow.png                   # 项目流程图
 
 `-- front                      # 前端目录
-
     |-- README.md              # 前端文档
-
     |-- next-env.d.ts          # Next.js TypeScript 声明文件
-
     |-- next.config.mjs        # Next.js 配置文件
-
-    |-- node_modules           # 前端依赖模块
-
     |-- package-lock.json      # 包版本一致性文件
-
     |-- package.json           # 前端项目依赖和脚本
-
     |-- postcss.config.mjs     # PostCSS 配置文件
-
-    |-- src                    # 前端源代码目录
-
-    |   |-- app                # 应用程序主要逻辑
-    |   `-- components         # 组件目录
-
     |-- tailwind.config.ts     # Tailwind CSS 配置文件
-
-    `-- tsconfig.json          # TypeScript 配置文件
+    |-- tsconfig.json          # TypeScript 配置文件
+    `-- src                    # 前端源代码目录
+        |-- abi                # ABI 文件目录
+        |   |-- NFTDestroyerABI.json
+        |   `-- TransferABI.json
+        |-- app                # 应用程序主要逻辑
+        |   |-- components     # 组件目录
+        |   |   |-- NFTGallery.tsx # 负责展示用户拥有的NFT集合。
+        |   |   `-- UniqueProperties.tsx # 负责展示物业列表，并提供预订按钮。接收 onBookNow 回调函数，处理预订逻辑。
+        |   |-- hooks          # 自定义钩子目录
+        |   |   |-- useNFT.ts  # 负责处理与NFT相关的操作，如铸造NFT和刷新NFT列表。
+        |   |   `-- useWallet.ts # 负责管理钱包的连接状态、账户信息和网络状态。
+        |   |-- nft            # NFT 相关逻辑
+        |   |   |-- index.tsx
+        |   |   `-- nftUtils.ts # 负责与NFT相关的数据获取和处理逻辑。
+        |   |-- page.tsx       # 主页面组件
+        |   `-- layout.tsx     # 布局组件
+        `-- components         # 通用组件目录
+            `-- ui             # UI 组件
 ```
+

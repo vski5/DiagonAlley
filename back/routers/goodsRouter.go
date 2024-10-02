@@ -11,5 +11,7 @@ func SetupGoodsRoutes(router *gin.Engine, controller controllers.GoodsController
 	goodsGroup := router.Group("/goods")
 	{
 		goodsGroup.GET("", controller.HandleGoods)
+
+		goodsGroup.POST("getgoods", controller.HandleGetGoods)
 	}
 }

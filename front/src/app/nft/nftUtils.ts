@@ -6,9 +6,6 @@ const nftContractAddress = '0x7b33012DCB61D8e377B4201842A8Be27d79A3576';
 const nftABI = TransferABI;
 const networkUrl = 'https://neoxt4seed1.ngd.network';
 
-const provider = new ethers.JsonRpcProvider(networkUrl);
-const contract = new ethers.Contract(nftContractAddress, nftABI, provider);
-
 export const getTokensId = async (recipient: string, index: number, nftContract: ethers.Contract) => {
   try {
     const tokenId = await nftContract.tokenOfOwnerByIndex(recipient, index);
@@ -19,8 +16,10 @@ export const getTokensId = async (recipient: string, index: number, nftContract:
   }
 };
 
-export const fetchNFTs = async (ownerAddress: string) => {
+export const fetchNFTs = async (ownerAddress: string, provider: ethers.Provider, chainId: number) => {
   if (!ownerAddress) return [];
+
+  const contract = new ethers.Contract(nftContractAddress, nftABI, provider);
 
   try {
     const balance = await contract.balanceOf(ownerAddress);
