@@ -69,6 +69,72 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 					},
 				},
 			},
+			{
+				"id":    3,
+				"title": "Langkawi Beachfront Villa",
+				"location": gin.H{
+					"city":     "Langkawi",
+					"district": "Pantai Cenang",
+				},
+				"price": gin.H{
+					"perMinute": 0.0010,
+					"currency":  "GAS",
+				},
+				"image": gin.H{
+					"url":     "https://example.com/langkawi_villa.jpg",
+					"altText": "Beachfront villa with sunset view",
+				},
+				"landlord": gin.H{
+					"name": "Tan Sri Lim",
+					"contact": gin.H{
+						"email": "tanlim@example.com",
+					},
+				},
+			},
+			{
+				"id":    4,
+				"title": "Cameron Highlands Bungalow",
+				"location": gin.H{
+					"city":     "Cameron Highlands",
+					"district": "Tanah Rata",
+				},
+				"price": gin.H{
+					"perMinute": 0.0006,
+					"currency":  "GAS",
+				},
+				"image": gin.H{
+					"url":     "https://example.com/cameron_bungalow.jpg",
+					"altText": "Bungalow in the hills",
+				},
+				"landlord": gin.H{
+					"name": "Mohd Ali",
+					"contact": gin.H{
+						"email": "mohdali@example.com",
+					},
+				},
+			},
+			{
+				"id":    5,
+				"title": "Melaka Heritage Home",
+				"location": gin.H{
+					"city":     "Melaka",
+					"district": "Jonker Street",
+				},
+				"price": gin.H{
+					"perMinute": 0.0009,
+					"currency":  "GAS",
+				},
+				"image": gin.H{
+					"url":     "https://example.com/melaka_home.jpg",
+					"altText": "Heritage home in the heart of Melaka",
+				},
+				"landlord": gin.H{
+					"name": "Chong Hock Lee",
+					"contact": gin.H{
+						"email": "chonghocklee@example.com",
+					},
+				},
+			},
 		},
 	}
 
