@@ -21,7 +21,56 @@ func NewGoodsController() GoodsController {
 
 // HandleGoods 处理购买请求的控制器
 func (pc *goodsController) HandleGoods(c *gin.Context) {
+	// 定义要返回的 JSON 数据
+	response := gin.H{
+		"properties": []gin.H{
+			{
+				"id":    1,
+				"title": "Kuala Lumpur Apartment",
+				"location": gin.H{
+					"city":     "Kuala Lumpur",
+					"district": "Bukit Bintang",
+				},
+				"price": gin.H{
+					"perMinute": 0.0005,
+					"currency":  "GAS",
+				},
+				"image": gin.H{
+					"url":     "https://example.com/kl_apartment.jpg",
+					"altText": "Apartment exterior",
+				},
+				"landlord": gin.H{
+					"name": "Aminah Binti Ahmad",
+					"contact": gin.H{
+						"email": "aminah@example.com",
+					},
+				},
+			},
+			{
+				"id":    2,
+				"title": "Penang Beach House",
+				"location": gin.H{
+					"city":     "Penang",
+					"district": "Tanjung Bungah",
+				},
+				"price": gin.H{
+					"perMinute": 0.0008,
+					"currency":  "GAS",
+				},
+				"image": gin.H{
+					"url":     "https://example.com/penang_beach_house.jpg",
+					"altText": "Beach house view",
+				},
+				"landlord": gin.H{
+					"name": "Lee Wei Ming",
+					"contact": gin.H{
+						"email": "weiming@example.com",
+					},
+				},
+			},
+		},
+	}
 
-	// 响应前端
-	c.String(http.StatusOK, "goods request received and processed")
+	// 响应前端，返回 JSON 数据
+	c.JSON(http.StatusOK, response)
 }
