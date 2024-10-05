@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShoppingCart } from "lucide-react";
@@ -50,11 +49,18 @@ const UniqueProperties: React.FC<UniquePropertiesProps> = ({ onBookNow }) => {
               <p className="text-sm text-center mt-2">
                 房东: {property.landlord.name}
               </p>
+              <p className={`text-center mt-2 ${property.booked ? 'text-red-500' : 'text-green-500'}`}>
+                {property.booked ? '已预订' : '可预订'}
+              </p>
             </CardContent>
             <CardFooter className="flex justify-center">
-              <Button onClick={() => onBookNow(property)}>
+              <Button 
+                onClick={() => onBookNow(property)} 
+                disabled={property.booked}
+                className={`border border-black text-white ${property.booked ? 'bg-gray-300 cursor-not-allowed' : 'bg-black'}`}
+              >
                 <ShoppingCart className="mr-2 h-4 w-4" />
-                立即预订
+                {property.booked ? '不可预订' : '立即预订'}
               </Button>
             </CardFooter>
           </Card>

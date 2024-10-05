@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -46,6 +47,7 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 						"email": "aminah@example.com",
 					},
 				},
+				"booked": false,
 			},
 			{
 				"id":    2,
@@ -68,6 +70,7 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 						"email": "weiming@example.com",
 					},
 				},
+				"booked": true,
 			},
 			{
 				"id":    3,
@@ -90,6 +93,7 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 						"email": "tanlim@example.com",
 					},
 				},
+				"booked": false,
 			},
 			{
 				"id":    4,
@@ -112,6 +116,7 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 						"email": "mohdali@example.com",
 					},
 				},
+				"booked": true,
 			},
 			{
 				"id":    5,
@@ -134,6 +139,7 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 						"email": "chonghocklee@example.com",
 					},
 				},
+				"booked": false,
 			},
 		},
 	}
@@ -149,6 +155,9 @@ func (pc *goodsController) HandleGetGoods(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "无法解析JSON"})
 		return
 	}
+
+	// 打印接收到的 JSON 数据
+	fmt.Printf("接收到的预订请求数据: %+v\n", jsonData)
 
 	// 这里可以选择将 jsonData 存储到数据库或进行其他操作
 

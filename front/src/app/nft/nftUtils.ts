@@ -72,3 +72,27 @@ export const fetchNFTs = async (ownerAddress: string, provider: ethers.Provider,
     return [{ name: "错误", description: `获取NFT信息失败: ${errorMessage}`, image: "" }];
   }
 };
+
+export interface Property {
+  id: number;
+  title: string;
+  location: {
+    city: string;
+    district: string;
+  };
+  price: {
+    perMinute: number;
+    currency: string;
+  };
+  image: {
+    url: string;
+    altText: string;
+  };
+  landlord: {
+    name: string;
+    contact: {
+      email: string;
+    };
+  };
+  booked: boolean; // 新增的属性
+}

@@ -47,6 +47,7 @@ export default function Home() {
     }
 
     try {
+      // 发送 POST 请求到后端
       const response = await fetch('http://127.0.0.1:2333/goods/getgoods', {
         method: 'POST',
         headers: {
@@ -61,10 +62,10 @@ export default function Home() {
 
       const result = await response.json();
       console.log('服务器响应:', result);
-      toast.success("物业预订成功！");
+      toast.success("物业预订请求已发送！");
     } catch (error) {
-      console.error('预订失败', error);
-      toast.error("预订失败，请重试。");
+      console.error('预订请求失败', error);
+      toast.error("预订请求失败，请重试。");
     }
   };
 
