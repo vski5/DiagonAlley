@@ -9,10 +9,12 @@ import { Alert } from "@/components/ui/alert";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useWallet } from './hooks/useWallet';
-import { useNFT } from './hooks/useNFT';
+// import { useNFT } from './hooks/useNFT';
 import { fetchNFTs, Property } from './nft/nftUtils';
 import UniqueProperties from './components/UniqueProperties';
 import NFTGallery from './components/NFTGallery';
+import { Contract, BrowserProvider } from 'ethers';
+import TransferABI from '@/abi/TransferABI.json';
 
 export default function Home() {
   const [nfts, setNfts] = useState<any[]>([]);
@@ -25,8 +27,10 @@ export default function Home() {
   } = useWallet();
 
   const neoXT4ChainId = 12227332;
+  const contractAddress = '0xd30eA7f4b2a5240daBB7ca5905a2c1698FB6964f';
 
-  const { mintTestNFT, loading } = useNFT(account, setNfts, neoXT4ChainId);
+  // 删除 useNFT 的引用
+  // const { mintTestNFT, loading } = useNFT(account, setNfts, neoXT4ChainId);
 
   useEffect(() => {
     if (connected) {
@@ -34,6 +38,37 @@ export default function Home() {
       fetchNFTs(account, provider, neoXT4ChainId).then(setNfts);
     }
   }, [account, connected]);
+
+  const onMintNFT = async (bookingMinutes: number, propertyId: number, pricePerMinute: number, totalPrice: bigint) => {
+    if (!connected) {
+      toast.error("请先连接您的钱包！");
+      return;
+    }
+
+    if (networkError) {
+      toast.error("请切换到NeoX T4网络！");
+      return;
+    }
+
+    try {
+      const provider = new BrowserProvider((window as any).ethereum);
+      const signer = await provider.getSigner();
+      const contract = new Contract(contractAddress, TransferABI, signer);
+
+      const pricePerMinuteWei = BigInt(Math.floor(pricePerMinute * 1e18));
+      const tx = await contract.mintNFT(bookingMinutes, propertyId, pricePerMinuteWei, { value: totalPrice });
+
+      toast.info("NFT 铸造中，请等待确认...");
+      await tx.wait();
+      toast.success("NFT 铸造成功！");
+
+      // 刷新 NFT 列表
+      fetchNFTs(account, provider, neoXT4ChainId).then(setNfts);
+    } catch (error) {
+      console.error('铸造 NFT 失败', error);
+      throw error;
+    }
+  };
 
   const bookProperty = async (property: Property) => {
     if (!connected) {
@@ -90,15 +125,9 @@ export default function Home() {
                 切换到NeoX T4
               </Button>
             ) : (
-              <>
-                <span className="text-sm text-green-600 mr-2">
-                  已连接: {account.slice(0, 6)}...{account.slice(-4)}
-                </span>
-                <Button onClick={mintTestNFT} size="sm" disabled={loading}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  {loading ? '处理中...' : '铸造NFT'}
-                </Button>
-              </>
+              <span className="text-sm text-green-600 mr-2">
+                已连接: {account.slice(0, 6)}...{account.slice(-4)}
+              </span>
             )}
           </div>
         </div>
@@ -112,7 +141,7 @@ export default function Home() {
 
         <div className="flex flex-col md:flex-row gap-8">
           <div className="w-full md:w-1/2">
-            <UniqueProperties onBookNow={bookProperty} />
+            <UniqueProperties onBookNow={bookProperty} onMintNFT={onMintNFT} />
           </div>
           <div className="w-full md:w-1/2">
             <NFTGallery nfts={nfts} />

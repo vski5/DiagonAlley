@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import { toast } from 'react-toastify';
 import TransferABI from '@/abi/TransferABI.json';
 
-const nftContractAddress = '0x7b33012DCB61D8e377B4201842A8Be27d79A3576';
+const nftContractAddress = '0xd30eA7f4b2a5240daBB7ca5905a2c1698FB6964f';
 const nftABI = TransferABI;
 const networkUrl = 'https://neoxt4seed1.ngd.network';
 

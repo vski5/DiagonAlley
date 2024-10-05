@@ -8,9 +8,10 @@ import { Minus, Plus } from 'lucide-react'; // 导入 Minus 和 Plus 图标
 
 interface UniquePropertiesProps {
   onBookNow: (property: Property) => void;
+  onMintNFT: (bookingMinutes: number, propertyId: number, pricePerMinute: number, totalPrice: bigint) => Promise<void>;
 }
 
-const UniqueProperties: React.FC<UniquePropertiesProps> = ({ onBookNow }) => {
+const UniqueProperties: React.FC<UniquePropertiesProps> = ({ onBookNow, onMintNFT }) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [bookingTimes, setBookingTimes] = useState<{ [key: number]: number }>({});
 
@@ -125,7 +126,14 @@ const UniqueProperties: React.FC<UniquePropertiesProps> = ({ onBookNow }) => {
             </div>
             <CardFooter className="flex justify-center mt-4">
               <Button 
-                onClick={() => onBookNow({ ...property, bookingMinutes: bookingTimes[property.id] || 0 })} 
+                onClick={() => {
+                  const bookingMinutes = BigInt(bookingTimes[property.id] || 0);
+                  const pricePerMinute = BigInt(Math.floor(property.price.perMinute * 1e18)); // 将价格转换为 wei
+                  const totalPrice = bookingMinutes * pricePerMinute;
+                  onMintNFT(Number(bookingMinutes), property.id, Number(property.price.perMinute), totalPrice)
+                    .then(() => onBookNow({ ...property, bookingMinutes: Number(bookingMinutes) }))
+                    .catch((error) => toast.error(`铸造 NFT 失败: ${error.message}`));
+                }} 
                 disabled={property.booked || (bookingTimes[property.id] || 0) === 0}
                 className={`border border-black text-white px-4 py-2 rounded-md focus:outline-none transition-colors ${property.booked || (bookingTimes[property.id] || 0) === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-black hover:bg-gray-700'}`}
               >

@@ -5,7 +5,7 @@ import TransferABI from '@/abi/TransferABI.json';
 import { toast } from 'react-toastify';
 import { fetchNFTs, Property } from '@/app/nft/nftUtils';
 
-const contractAddress = '0x7b33012DCB61D8e377B4201842A8Be27d79A3576';
+const contractAddress = '0xd30eA7f4b2a5240daBB7ca5905a2c1698FB6964f';
 const customNetwork = {
   chainId: 12227332,
 };
