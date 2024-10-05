@@ -150,19 +150,54 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 
 // HandleGetGoods 处理购买请求的控制器
 func (pc *goodsController) HandleGetGoods(c *gin.Context) {
-	var jsonData interface{}
-	if err := c.ShouldBindJSON(&jsonData); err != nil {
+	var propertyData Property
+	if err := c.ShouldBindJSON(&propertyData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "无法解析JSON"})
 		return
 	}
 
-	// 打印接收到的 JSON 数据
-	fmt.Printf("接收到的预订请求数据: %+v\n", jsonData)
+	// 打印接收到的完整物业数据
+	fmt.Printf("接收到的预订请求数据: %+v\n", propertyData)
 
-	// 这里可以选择将 jsonData 存储到数据库或进行其他操作
+	// 这里可以选择将 propertyData 存储到数据库或进行其他操作
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "接收成功",
-		"data":    jsonData,
+		"message": "预订请求接收成功",
+		"data":    propertyData,
 	})
+}
+
+type Property struct {
+	ID             int      `json:"id"`
+	Title          string   `json:"title"`
+	Location       Location `json:"location"`
+	Price          Price    `json:"price"`
+	Image          Image    `json:"image"`
+	Landlord       Landlord `json:"landlord"`
+	Booked         bool     `json:"booked"`
+	BookingMinutes int      `json:"bookingMinutes"`
+}
+
+type Location struct {
+	City     string `json:"city"`
+	District string `json:"district"`
+}
+
+type Price struct {
+	PerMinute float64 `json:"perMinute"`
+	Currency  string  `json:"currency"`
+}
+
+type Image struct {
+	URL     string `json:"url"`
+	AltText string `json:"altText"`
+}
+
+type Landlord struct {
+	Name    string  `json:"name"`
+	Contact Contact `json:"contact"`
+}
+
+type Contact struct {
+	Email string `json:"email"`
 }
