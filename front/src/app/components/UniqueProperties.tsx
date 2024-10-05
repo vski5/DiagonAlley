@@ -74,7 +74,9 @@ const UniqueProperties: React.FC<UniquePropertiesProps> = ({ onBookNow, onMintNF
             <div>
               <CardHeader>
                 <CardTitle className="text-center">{property.title}</CardTitle>
-                <CardDescription className="text-center">{property.location.city}, {property.location.district}</CardDescription>
+                <CardDescription className="text-center">
+                  ID: {property.id} | {property.location.city}, {property.location.district}
+                </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-center">
                 <div className="w-64 mx-auto">
