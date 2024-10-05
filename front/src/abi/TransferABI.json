@@ -162,7 +162,23 @@
     {
       "type": "function",
       "name": "mintNFT",
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "bookingMinutes",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        {
+          "name": "propertyId",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        {
+          "name": "pricePerMinute",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
       "outputs": [],
       "stateMutability": "payable"
     },

@@ -36,8 +36,8 @@ contract TransferContract is ERC721Enumerable, Ownable, ReentrancyGuard {
      * @dev 铸造NFT并存储押金。
      * @notice 用户需支付0.01 ETH作为押金。
      */
-    function mintNFT() public payable nonReentrant {
-        require(msg.value == 0.01 ether, "Deposit must be 0.01 ETH");
+    function mintNFT(uint256 bookingMinutes, uint256 propertyId, uint256 pricePerMinute) public payable nonReentrant {
+        require(msg.value == bookingMinutes * pricePerMinute, "Incorrect payment amount");
 
         uint256 tokenId = _tokenIdCounter;
         _safeMint(msg.sender, tokenId);
@@ -49,7 +49,9 @@ contract TransferContract is ERC721Enumerable, Ownable, ReentrancyGuard {
             abi.encodePacked(
                 '{"description": {',
                 '"mint_time": ', Strings.toString(block.timestamp), ',',
-                '"expiry_time": ', Strings.toString(block.timestamp + 5 minutes),
+                '"expiry_time": ', Strings.toString(block.timestamp + bookingMinutes * 1 minutes), ',',
+                '"overdue_time": ', Strings.toString(block.timestamp + bookingMinutes * 1 minutes + 5 minutes), ',',
+                '"property_id": ', Strings.toString(propertyId),
                 '}}'
             )
         );
