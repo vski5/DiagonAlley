@@ -9,7 +9,7 @@ interface UniquePropertiesProps {
   onBookNow: (property: Property) => void;
 }
 
-const UniqueProperties: React.FC<UniquePropertiesProps> = ({ onBookNow }) => {
+export default function UniqueProperties({ onBookNow }: UniquePropertiesProps) {
   const [properties, setProperties] = useState<Property[]>([]);
 
   useEffect(() => {
@@ -29,35 +29,45 @@ const UniqueProperties: React.FC<UniquePropertiesProps> = ({ onBookNow }) => {
 
   return (
     <div className="h-[calc(100vh-120px)] overflow-y-auto pr-4">
-      <h2 className="text-2xl font-bold mb-4">独特物业</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <h2 className="text-3xl font-bold mb-6 text-gray-900">独特物业</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {properties.map(property => (
-          <Card key={property.id} className="w-full">
-            <CardHeader>
-              <CardTitle>{property.title}</CardTitle>
-              <CardDescription>{property.location.city}, {property.location.district}</CardDescription>
+          <Card key={property.id} className="w-full border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="border-b border-gray-100">
+              <CardTitle className="text-xl text-gray-800">{property.title}</CardTitle>
+              <CardDescription className="text-gray-500">{property.location.city}, {property.location.district}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-4">
               <img
                 src={property.image.url}
                 alt={property.image.altText}
-                className="w-full h-48 object-cover rounded-md mb-4"
+                className="w-full h-56 object-cover rounded-md mb-4"
               />
-              <p className="text-2xl font-bold text-center">
+              <p className="text-2xl font-bold text-center text-gray-900">
                 {property.price.perMinute} {property.price.currency}/分钟
               </p>
-              <p className="text-sm text-center mt-2">
+              <p className="text-sm text-center mt-2 text-gray-600">
                 房东: {property.landlord.name}
               </p>
-              <p className={`text-center mt-2 ${property.booked ? 'text-red-500' : 'text-green-500'}`}>
+              <p className={`text-center mt-2 font-semibold ${property.booked ? 'text-red-600' : 'text-green-600'}`}>
                 {property.booked ? '已预订' : '可预订'}
               </p>
             </CardContent>
-            <CardFooter className="flex justify-center">
+            <CardFooter className="flex justify-center pt-2 pb-4">
               <Button 
                 onClick={() => onBookNow(property)} 
                 disabled={property.booked}
-                className={`border border-black text-white ${property.booked ? 'bg-gray-300 cursor-not-allowed' : 'bg-black'}`}
+                className={`
+                  w-full max-w-xs
+                  border border-gray-800 
+                  text-white 
+                  ${property.booked 
+                    ? 'bg-gray-300 cursor-not-allowed hover:bg-gray-300' 
+                    : 'bg-gray-800 hover:bg-gray-700 active:bg-gray-900'
+                  }
+                  transition-colors duration-200
+                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50
+                `}
               >
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 {property.booked ? '不可预订' : '立即预订'}
@@ -68,6 +78,4 @@ const UniqueProperties: React.FC<UniquePropertiesProps> = ({ onBookNow }) => {
       </div>
     </div>
   );
-};
-
-export default UniqueProperties;
+}
