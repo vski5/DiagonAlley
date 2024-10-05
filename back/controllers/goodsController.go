@@ -38,7 +38,7 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 					"currency":  "GAS",
 				},
 				"image": gin.H{
-					"url":     "https://example.com/kl_apartment.jpg",
+					"url":     "https://storage.googleapis.com/a1aa/image/jzJmfG6qrW0rDigeEX0Sfi8omu0nT05Ful06dZzRYsTmgTHnA.jpg",
 					"altText": "Apartment exterior",
 				},
 				"landlord": gin.H{
@@ -61,7 +61,7 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 					"currency":  "GAS",
 				},
 				"image": gin.H{
-					"url":     "https://example.com/penang_beach_house.jpg",
+					"url":     "https://storage.googleapis.com/a1aa/image/A1Fr4fr75ZT1ZCX4oJch9x1QhBcih8XYWzjJNCYmR8Hs50xJA.jpg",
 					"altText": "Beach house view",
 				},
 				"landlord": gin.H{
@@ -84,7 +84,7 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 					"currency":  "GAS",
 				},
 				"image": gin.H{
-					"url":     "https://example.com/langkawi_villa.jpg",
+					"url":     "https://storage.googleapis.com/a1aa/image/0DcJzLCKBZbDCdYBZfmmDsShtcYIU4fHJ8reN3XkdVeuUnOOB.jpg",
 					"altText": "Beachfront villa with sunset view",
 				},
 				"landlord": gin.H{
@@ -107,7 +107,7 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 					"currency":  "GAS",
 				},
 				"image": gin.H{
-					"url":     "https://example.com/cameron_bungalow.jpg",
+					"url":     "https://storage.googleapis.com/a1aa/image/Gd9gxRD9HLoNGpeScJhYSmcAxDtFfaa3yanRhooEOgim0pjTA.jpg",
 					"altText": "Bungalow in the hills",
 				},
 				"landlord": gin.H{
@@ -130,7 +130,7 @@ func (pc *goodsController) HandleGoods(c *gin.Context) {
 					"currency":  "GAS",
 				},
 				"image": gin.H{
-					"url":     "https://example.com/melaka_home.jpg",
+					"url":     "https://storage.googleapis.com/a1aa/image/5MEeF4L9ov38cy0R2dSCDPfjRvva9C82SXSDkBG51wMT0pjTA.jpg",
 					"altText": "Heritage home in the heart of Melaka",
 				},
 				"landlord": gin.H{

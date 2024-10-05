@@ -94,5 +94,6 @@ export interface Property {
       email: string;
     };
   };
-  booked: boolean; // 新增的属性
+  booked: boolean; // 已预订状态
+  bookingMinutes?: number; // 预订的分钟数（可选）
 }

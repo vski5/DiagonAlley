@@ -46,14 +46,22 @@ export default function Home() {
       return;
     }
 
+    if (property.bookingMinutes === undefined || property.bookingMinutes <= 0) {
+      toast.error("预订时间必须大于0！");
+      return;
+    }
+
     try {
-      // 发送 POST 请求到后端
+      // 发送 POST 请求到后端，包含预订的分钟数
       const response = await fetch('http://127.0.0.1:2333/goods/getgoods', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(property),
+        body: JSON.stringify({
+          propertyId: property.id,
+          bookingMinutes: property.bookingMinutes,
+        }),
       });
 
       if (!response.ok) {
