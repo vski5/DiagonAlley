@@ -17,7 +17,7 @@ export const getTokensId = async (recipient: string, index: number, nftContract:
 };
 
 export const fetchNFTs = async (ownerAddress: string, provider: ethers.Provider, chainId: number) => {
-  if (!ownerAddress) return [];
+  if (!ownerAddress) return Promise.resolve([]);
 
   const contract = new ethers.Contract(nftContractAddress, nftABI, provider);
 
@@ -26,7 +26,7 @@ export const fetchNFTs = async (ownerAddress: string, provider: ethers.Provider,
     console.log(`用户 ${ownerAddress} 的 NFT 余额: ${balance.toString()}`);
 
     if (balance === 0n) {
-      return [{ name: "提示", description: `用户 ${ownerAddress} 没有持有任何 NFT`, image: "" }];
+      return Promise.resolve([{ name: "提示", description: `用户 ${ownerAddress} 没有持有任何 NFT`, image: "" }]);
     }
 
     const items = [];
@@ -69,7 +69,7 @@ export const fetchNFTs = async (ownerAddress: string, provider: ethers.Provider,
     console.error('获取NFT失败', error);
     const errorMessage = error instanceof Error ? error.message : String(error);
     toast.error(`无法获取NFT信息: ${errorMessage}`);
-    return [{ name: "错误", description: `获取NFT信息失败: ${errorMessage}`, image: "" }];
+    return Promise.resolve([{ name: "错误", description: `获取NFT信息失败: ${errorMessage}`, image: "" }]);
   }
 };
 

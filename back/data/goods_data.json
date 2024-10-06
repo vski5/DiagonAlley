@@ -1,0 +1,117 @@
+[
+    {
+      "id": 1,
+      "title": "Kuala Lumpur Apartment",
+      "location": {
+        "city": "Kuala Lumpur",
+        "district": "Bukit Bintang"
+      },
+      "price": {
+        "perMinute": 0.0005,
+        "currency": "GAS"
+      },
+      "image": {
+        "url": "https://storage.googleapis.com/a1aa/image/jzJmfG6qrW0rDigeEX0Sfi8omu0nT05Ful06dZzRYsTmgTHnA.jpg",
+        "altText": "Apartment exterior"
+      },
+      "landlord": {
+        "name": "Aminah Binti Ahmad",
+        "contact": {
+          "email": "aminah@example.com"
+        }
+      },
+      "booked": false
+    },
+    {
+      "id": 2,
+      "title": "Penang Beach House",
+      "location": {
+        "city": "Penang",
+        "district": "Tanjung Bungah"
+      },
+      "price": {
+        "perMinute": 0.0008,
+        "currency": "GAS"
+      },
+      "image": {
+        "url": "https://storage.googleapis.com/a1aa/image/A1Fr4fr75ZT1ZCX4oJch9x1QhBcih8XYWzjJNCYmR8Hs50xJA.jpg",
+        "altText": "Beach house view"
+      },
+      "landlord": {
+        "name": "Lee Wei Ming",
+        "contact": {
+          "email": "weiming@example.com"
+        }
+      },
+      "booked": true
+    },
+    {
+      "id": 3,
+      "title": "Langkawi Beachfront Villa",
+      "location": {
+        "city": "Langkawi",
+        "district": "Pantai Cenang"
+      },
+      "price": {
+        "perMinute": 0.0010,
+        "currency": "GAS"
+      },
+      "image": {
+        "url": "https://storage.googleapis.com/a1aa/image/0DcJzLCKBZbDCdYBZfmmDsShtcYIU4fHJ8reN3XkdVeuUnOOB.jpg",
+        "altText": "Beachfront villa with sunset view"
+      },
+      "landlord": {
+        "name": "Tan Sri Lim",
+        "contact": {
+          "email": "tanlim@example.com"
+        }
+      },
+      "booked": false
+    },
+    {
+      "id": 4,
+      "title": "Cameron Highlands Bungalow",
+      "location": {
+        "city": "Cameron Highlands",
+        "district": "Tanah Rata"
+      },
+      "price": {
+        "perMinute": 0.0006,
+        "currency": "GAS"
+      },
+      "image": {
+        "url": "https://storage.googleapis.com/a1aa/image/Gd9gxRD9HLoNGpeScJhYSmcAxDtFfaa3yanRhooEOgim0pjTA.jpg",
+        "altText": "Bungalow in the hills"
+      },
+      "landlord": {
+        "name": "Mohd Ali",
+        "contact": {
+          "email": "mohdali@example.com"
+        }
+      },
+      "booked": true
+    },
+    {
+      "id": 5,
+      "title": "Melaka Heritage Home",
+      "location": {
+        "city": "Melaka",
+        "district": "Jonker Street"
+      },
+      "price": {
+        "perMinute": 0.0009,
+        "currency": "GAS"
+      },
+      "image": {
+        "url": "https://storage.googleapis.com/a1aa/image/5MEeF4L9ov38cy0R2dSCDPfjRvva9C82SXSDkBG51wMT0pjTA.jpg",
+        "altText": "Heritage home in the heart of Melaka"
+      },
+      "landlord": {
+        "name": "Chong Hock Lee",
+        "contact": {
+          "email": "chonghocklee@example.com"
+        }
+      },
+      "booked": false
+    }
+  ]

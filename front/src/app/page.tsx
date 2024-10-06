@@ -108,6 +108,17 @@ export default function Home() {
     }
   };
 
+  const onNFTDestroyed = async (tokenId: number) => {
+    // 从 nfts 数组中移除被销毁的 NFT
+    setNfts(prevNfts => prevNfts.filter(nft => nft.tokenId !== tokenId));
+    
+    // 可选：刷新 NFT 列表
+    if (connected) {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      fetchNFTs(account, provider, neoXT4ChainId).then(setNfts);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <ToastContainer />
@@ -144,7 +155,7 @@ export default function Home() {
             <UniqueProperties onBookNow={bookProperty} onMintNFT={onMintNFT} />
           </div>
           <div className="w-full md:w-1/2">
-            <NFTGallery nfts={nfts} />
+            <NFTGallery nfts={nfts} onNFTDestroyed={onNFTDestroyed} />
           </div>
         </div>
       </div>
