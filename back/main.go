@@ -47,11 +47,14 @@ func main() {
 	routers.SetupGoodsRoutes(router, goodsController)
 
 	dsn := ini.GetDatabaseKey()
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	var DB *gorm.DB
+	var err error
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		fmt.Println("数据库连接失败:", err)
 	} else {
-		fmt.Println("数据库连接成功", db)
+		fmt.Println("数据库连接成功", DB)
 	}
 	// 启动服务器
 	serverPort := ini.GetServerPort()
