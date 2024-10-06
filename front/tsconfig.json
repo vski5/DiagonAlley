@@ -20,7 +20,8 @@
     "baseUrl": ".", // 这应该指向包含 `src` 目录的基级目录
     "paths": {
       "@/*": ["./src/*"] // 确保这条路径正确映射到你的源代码目录
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/ui/button"],
   "exclude": ["node_modules"]

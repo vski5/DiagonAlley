@@ -15,6 +15,7 @@ import UniqueProperties from './components/UniqueProperties';
 import NFTGallery from './components/NFTGallery';
 import { Contract, BrowserProvider } from 'ethers';
 import TransferABI from '@/abi/TransferABI.json';
+import DestroyNFT from './components/DestroyNFT';
 
 export default function Home() {
   const [nfts, setNfts] = useState<any[]>([]);
@@ -156,6 +157,7 @@ export default function Home() {
           </div>
           <div className="w-full md:w-1/2">
             <NFTGallery nfts={nfts} onNFTDestroyed={onNFTDestroyed} />
+            <DestroyNFT /> 
           </div>
         </div>
       </div>
