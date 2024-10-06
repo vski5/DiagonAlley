@@ -38,6 +38,12 @@ graph TD
     E --> K[Frontend sends transaction data to backend]
     K --> L[Backend stores transaction data in PostgreSQL]
 
+    subgraph Password Query Process
+        M[User accesses password query page] --> N[User connects via MetaMask]
+        N --> O[Timestamp verification via NFT]
+        O --> P[If verified, display room password]
+    end
+
 ```
 
 ## Smart Contract Details
@@ -85,8 +91,7 @@ graph TD
     ```
     The frontend application will run at `http://localhost:3000`.
 
-6. **Configure the oracle**:
-    Ensure the **Chainlink oracle** is configured and the oracle contract address is added to the smart contracts.
+
 
 ## Development Considerations
 
